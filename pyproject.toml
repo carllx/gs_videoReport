@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "AI-powered video-to-lesson-plan converter for teachers"
 authors = ["Your Name <your.email@example.com>"]
 readme = "README.md"
+packages = [{include = "gs_video_report", from = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
