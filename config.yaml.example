@@ -1,0 +1,59 @@
+# yaml-language-server: $schema=./schemas/config.schema.json
+# gs_videoReport 配置文件示例
+# 复制此文件为 config.yaml 并填入您的实际配置信息
+
+# ===== 基础配置 =====
+api_key: "your-gemini-api-key-here"
+model_name: "gemini-2.5-flash"
+default_output_path: "./outputs/"
+default_prompt_template: "comprehensive_lesson"
+
+# ===== 认证配置 =====
+# 默认认证类型: "api_key" 或 "oauth"
+# 系统会根据视频类型和用户参数自动选择合适的认证方式
+auth_type: "api_key"
+
+# OAuth 2.0 配置（用于访问私有YouTube视频）
+# 如需访问私有视频，请在 Google Cloud Console 中创建OAuth 2.0客户端ID
+oauth:
+  client_id: "your-google-oauth-client-id"
+  client_secret: "your-google-oauth-client-secret"
+  # 以下字段将由系统自动管理，请勿手动修改
+  # access_token: "auto-managed"
+  # refresh_token: "auto-managed" 
+  # token_expiry: "auto-managed"
+
+# ===== 高级配置 =====
+# 视频处理配置
+video_processing:
+  max_file_size_mb: 2048  # 最大文件大小限制
+  supported_formats: ["mp4", "avi", "mov", "mkv", "webm"]
+  upload_timeout_seconds: 300  # 上传超时时间
+
+# API调用配置
+api_config:
+  max_retries: 3
+  timeout_seconds: 120
+  temperature: 0.1
+  max_output_tokens: 8192
+
+# 输出配置
+output_config:
+  include_timestamps: true
+  timestamp_format: "youtube"  # "youtube" 或 "standard"
+  obsidian_compatibility: true
+  
+# 错误处理配置  
+error_handling:
+  auto_retry_on_network_error: true
+  show_detailed_errors: false  # 设为true以显示详细错误信息
+  log_api_calls: false  # 设为true以记录API调用日志
+
+# ===== OAuth设置说明 =====
+# 要启用私有视频访问功能：
+# 1. 访问 https://console.cloud.google.com/
+# 2. 创建新项目或选择现有项目
+# 3. 启用 YouTube Data API v3
+# 4. 创建 OAuth 2.0 客户端ID（应用类型：桌面应用程序）
+# 5. 将客户端ID和客户端机密填入上述oauth配置中
+# 6. 首次运行时系统会自动引导您完成授权流程

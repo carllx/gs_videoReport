@@ -1,0 +1,123 @@
+# yaml-language-server: $schema=../../../../schemas/prompt-template.schema.json
+# Default Prompt Templates for gs_videoReport
+# This file defines the available prompt templates for video analysis
+
+templates:
+  comprehensive_lesson:
+    name: "comprehensive_lesson"
+    version: "1.0"
+    description: "Generate comprehensive lesson plan from video content"
+    parameters:
+      - video_duration
+      - subject_area
+      - detail_level
+    model_config:
+      temperature: 0.7
+      max_tokens: 8192
+    prompt: |
+      Analyze this educational video in the {{subject_area}} field (duration: {{video_duration}} minutes).
+      
+      Create a comprehensive lesson plan with {{detail_level}} level of detail, including:
+      
+      1. **Video Content Overview**
+         - Main topic and learning objectives
+         - Key concepts introduced
+         - Target audience level
+      
+      2. **Detailed Content Analysis**
+         - Important knowledge points with precise timestamps
+         - Key explanations and examples
+         - Visual elements and demonstrations
+      
+      3. **Learning Structure**
+         - Introduction (0:00-X:XX)
+         - Main content sections with timestamps
+         - Conclusion and summary
+      
+      4. **Key Timestamps** 
+         - Provide exact timestamps in MM:SS format
+         - Include brief description for each timestamp
+         - Mark critical learning moments
+      
+      5. **Educational Value**
+         - Learning outcomes
+         - Suggested follow-up activities
+         - Additional resources or readings
+      
+      Please ensure all timestamps are accurate to the second and include clear descriptions for easy navigation.
+
+  summary_report:
+    name: "summary_report"  
+    version: "1.0"
+    description: "Generate concise video summary report"
+    parameters:
+      - max_length
+      - focus_areas
+    model_config:
+      temperature: 0.5
+      max_tokens: 4096
+    prompt: |
+      Create a concise {{max_length}}-word summary of this video, focusing on {{focus_areas}}.
+      
+      Structure the summary as:
+      
+      1. **Main Topic** (1-2 sentences)
+      2. **Key Points** (3-5 bullet points with timestamps)  
+      3. **Important Timestamps** (Top 3-5 moments with MM:SS format)
+      4. **Conclusion** (1-2 sentences)
+      
+      Keep the language clear and educational, suitable for teachers and students.
+
+  chinese_transcript:
+    name: "chinese_transcript"
+    version: "1.0"
+    description: "生成中文逐字稿，包含时间戳、讲者标识和第一人称重点整理"
+    parameters:
+      - video_title
+      - video_duration
+      - detail_level
+      - language_preference
+    model_config:
+      temperature: 0.3
+      max_tokens: 8192
+      response_format: "structured"
+    prompt: |
+      请分析这个视频并按以下要求生成内容：
+
+      ## 任务要求：
+      1. **逐字稿转录**：将影片转录为简体中文逐字稿
+      2. **时间戳标注**：为每个重要段落添加精确时间戳
+      3. **讲者识别**：标示讲者名字（如果有多个讲者）
+      4. **第一人称整理**：最后以第一人称形式作重点整理
+      5. **图像信息补充**：遇到解释不清晰的地方，借助图像信息进行补充
+      6. **术语处理**：涉及术语以及人物时优先使用英语显示
+
+      ## 输出格式：
+      ```
+      # {{video_title}} - 中文逐字稿分析
+
+      ## 基本信息
+      - 视频标题：{{video_title}}
+      - 视频时长：{{video_duration}}
+      - 分析时间：{{current_timestamp}}
+
+      ## 逐字稿内容
+
+      ### [时间戳] 讲者名称
+      逐字稿内容...
+
+      ### [时间戳] 讲者名称  
+      逐字稿内容...
+
+      ## 重点整理（第一人称视角）
+      我从这个视频中学到了...
+
+      ## 关键术语和人物
+      - 术语1 (English Term)：中文解释
+      - 人物1 (English Name)：背景介绍
+
+      ## 图像补充信息
+      对于视频中不清晰的概念，通过图像分析得到的补充信息...
+      ```
+
+      请严格按照上述格式进行分析，确保内容准确、完整。

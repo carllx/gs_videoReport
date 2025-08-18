@@ -1,0 +1,83 @@
+---
+globs: "**/gemini_service.py,**/config.py,**/main.py,**/cli.py,**/*gemini*,**/*genai*"
+---
+
+# 自动应用于Gemini相关文件 (Auto-apply for Gemini-related files)
+
+当处理这些文件时，自动使用MCP Contact7获取Google Gen AI SDK文档：
+
+## 核心集成文件 (Core Integration Files)
+
+- **[gemini_service.py](mdc:src/gs_video_report/services/gemini_service.py)** - 主要Gemini API集成
+- **[config.py](mdc:src/gs_video_report/config.py)** - Google API配置管理  
+- **[main.py](mdc:src/gs_video_report/main.py)** - 应用入口点
+- **[cli.py](mdc:src/gs_video_report/cli.py)** - 命令行接口
+
+## MCP Contact7 使用指南
+
+对于任何涉及以下内容的代码编辑或问题：
+
+### 🔧 SDK初始化与配置
+
+```python
+from google import genai
+client = genai.Client(api_key='...')
+```
+
+→ **使用MCP**: `mcp_context7_get-library-docs` + topic="client configuration"
+
+### 📹 视频文件处理
+
+```python
+file = client.files.upload(file='video.mp4')
+client.models.generate_content(contents=[file, prompt])
+```
+
+→ **使用MCP**: `mcp_context7_get-library-docs` + topic="files and uploads"
+
+### 🤖 内容生成
+
+```python
+response = client.models.generate_content(
+    model='gemini-2.5-flash',
+    contents='...'
+)
+```
+
+→ **使用MCP**: `mcp_context7_get-library-docs` + topic="generate content"
+
+### 🔄 流式响应
+
+```python
+for chunk in client.models.generate_content_stream():
+    print(chunk.text)
+```
+
+→ **使用MCP**: `mcp_context7_get-library-docs` + topic="streaming"
+
+### ⚠️ 错误处理
+
+```python
+try:
+    response = client.models.generate_content(...)
+except Exception as e:
+    # 处理错误
+```
+
+→ **使用MCP**: `mcp_context7_get-library-docs` + topic="error handling"
+
+## 优先级规则 (Priority Rules)
+
+1. **首先** - 使用MCP Contact7获取最新SDK文档
+2. **其次** - 参考项目现有代码实现
+3. **最后** - 依赖通用知识作为补充
+
+## 自动触发关键词 (Auto-trigger Keywords)
+
+- `genai.Client`
+- `client.models.generate_content`
+- `client.files.upload`
+- `google-genai`
+- `gemini-2.5-flash`
+- `GOOGLE_API_KEY`
+- `GEMINI_API_KEY`

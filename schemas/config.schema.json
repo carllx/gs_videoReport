@@ -1,0 +1,144 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "gs_videoReport Configuration",
+  "description": "Schema for gs_videoReport configuration file",
+  "type": "object",
+  "required": ["api_key", "model_name"],
+  "properties": {
+    "api_key": {
+      "type": "string",
+      "description": "Gemini API key"
+    },
+    "model_name": {
+      "type": "string",
+      "default": "gemini-2.5-flash",
+      "description": "Gemini model name"
+    },
+    "default_output_path": {
+      "type": "string",
+      "default": "./outputs/",
+      "description": "Default output directory"
+    },
+    "default_prompt_template": {
+      "type": "string",
+      "default": "comprehensive_lesson",
+      "description": "Default prompt template name"
+    },
+    "auth_type": {
+      "type": "string",
+      "enum": ["api_key", "oauth"],
+      "default": "api_key",
+      "description": "Authentication type"
+    },
+    "oauth": {
+      "type": "object",
+      "properties": {
+        "client_id": {
+          "type": "string",
+          "description": "Google OAuth client ID"
+        },
+        "client_secret": {
+          "type": "string",
+          "description": "Google OAuth client secret"
+        },
+        "access_token": {
+          "type": "string",
+          "description": "OAuth access token (auto-managed)"
+        },
+        "refresh_token": {
+          "type": "string",
+          "description": "OAuth refresh token (auto-managed)"
+        },
+        "token_expiry": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Token expiry time (auto-managed)"
+        }
+      },
+      "required": ["client_id", "client_secret"]
+    },
+    "video_processing": {
+      "type": "object",
+      "properties": {
+        "max_file_size_mb": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 2048
+        },
+        "supported_formats": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": ["mp4", "avi", "mov", "mkv", "webm"]
+        },
+        "upload_timeout_seconds": {
+          "type": "integer",
+          "minimum": 30,
+          "default": 300
+        }
+      }
+    },
+    "api_config": {
+      "type": "object",
+      "properties": {
+        "max_retries": {
+          "type": "integer",
+          "minimum": 0,
+          "default": 3
+        },
+        "timeout_seconds": {
+          "type": "integer",
+          "minimum": 30,
+          "default": 120
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 0.1
+        },
+        "max_output_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 8192
+        }
+      }
+    },
+    "output_config": {
+      "type": "object",
+      "properties": {
+        "include_timestamps": {
+          "type": "boolean",
+          "default": true
+        },
+        "timestamp_format": {
+          "type": "string",
+          "enum": ["youtube", "standard"],
+          "default": "youtube"
+        },
+        "obsidian_compatibility": {
+          "type": "boolean",
+          "default": true
+        }
+      }
+    },
+    "error_handling": {
+      "type": "object",
+      "properties": {
+        "auto_retry_on_network_error": {
+          "type": "boolean",
+          "default": true
+        },
+        "show_detailed_errors": {
+          "type": "boolean",
+          "default": false
+        },
+        "log_api_calls": {
+          "type": "boolean",
+          "default": false
+        }
+      }
+    }
+  }
+}

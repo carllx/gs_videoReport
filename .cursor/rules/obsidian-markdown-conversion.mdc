@@ -1,0 +1,249 @@
+---
+description: "Guide for converting content to Obsidian-compatible Markdown format with proper syntax and features"
+---
+
+# Obsidian Markdown 格式转换规则 (Obsidian Markdown Conversion Rules)
+
+当需要将内容转换为Markdown格式时，必须遵循Obsidian的语法特征和最佳实践。
+
+## 触发场景 (Trigger Scenarios)
+
+此规则适用于以下情况：
+
+- 生成或转换教案/报告到Markdown格式
+- 处理[lesson plan templates](mdc:src/gs_video_report/templates/outputs/basic_lesson_plan.md)
+- 创建或编辑Obsidian兼容的文档
+- 任何涉及Markdown格式输出的场景
+
+## 核心语法规则 (Core Syntax Rules)
+
+### 1. 🔗 链接系统 (Linking System)
+
+**优先使用Wikilink格式**：
+
+```markdown
+[[文件名]] 或 [[文件名|显示文本]]
+```
+
+**标准链接格式** (当需要时)：
+
+```markdown
+[显示文本](文件名.md)
+```
+
+### 2. 📝 换行控制 (Line Break Control)
+
+**严格换行规则**：
+
+- **单次回车无空格**：合并为一行
+- **单次回车 + 2个空格**：段落内换行  
+- **双次回车**：创建新段落
+
+```markdown
+这是第一行
+这是第二行，会与第一行合并
+
+这是新段落
+
+这是段落内换行示例  
+这行会在上一行下方但同属一段
+```
+
+### 3. 🎨 文本格式化 (Text Formatting)
+
+**基础格式**：
+
+```markdown
+**粗体文本**
+*斜体文本*
+==高亮文本==
+~~删除线文本~~
+```
+
+**嵌套格式**：
+
+```markdown
+**粗体文本和_嵌套斜体_文本**
+*斜体和==嵌套高亮==文本*
+```
+
+### 4. ✅ 任务列表 (Task Lists)
+
+**可交互任务列表**：
+
+```markdown
+- [x] 已完成任务
+- [ ] 未完成任务
+- [ ] 子任务示例
+  - [x] 嵌套已完成任务
+  - [ ] 嵌套未完成任务
+```
+
+### 5. 📋 列表系统 (List System)
+
+**支持任意嵌套**：
+
+```markdown
+1. 有序列表项
+   - 无序子项
+     - 更深层嵌套
+2. 第二个有序项
+   1. 嵌套有序列表
+```
+
+### 6. 💻 代码块 (Code Blocks)
+
+**带语法高亮的代码块**：
+
+```python
+def generate_lesson_plan():
+    """生成教案示例"""
+    return "Hello World"
+```
+
+**内联代码**：
+
+```markdown
+使用 `client.models.generate_content()` 方法调用API
+```
+
+### 7. 🔢 脚注系统 (Footnote System)
+
+**标准脚注**：
+
+```markdown
+这里有一个脚注引用[^1]
+
+[^1]: 这是脚注内容
+```
+
+**内联脚注**：
+
+```markdown
+这里有内联脚注^[这是内联脚注内容]
+```
+
+### 8. 💬 注释功能 (Comments)
+
+**仅编辑视图可见的注释**：
+
+```markdown
+%%这是注释，在阅读视图中不可见%%
+
+正常文本内容 %%内联注释%% 继续正常内容
+```
+
+## 转换最佳实践 (Conversion Best Practices)
+
+### 📚 知识管理优化
+
+- 使用`[[双向链接]]`连接相关概念
+- 为重要术语添加`==高亮==`
+- 使用层级标题构建内容结构
+
+### ✍️ 学术写作格式
+
+```markdown
+# 主标题
+
+## 章节标题
+
+### 小节标题
+
+重要概念使用==高亮==标记，引用使用脚注[^1]。
+
+> 引用块用于重要观点或引文
+
+**关键点**：
+- 使用粗体强调重要信息
+- *斜体*用于术语或强调
+- ==高亮==用于核心概念
+```
+
+### 📋 项目管理格式
+
+```markdown
+## 待办事项
+
+- [ ] 主要任务
+  - [x] 子任务1 - 已完成
+  - [ ] 子任务2 - 进行中
+  - [ ] 子任务3 - 待开始
+
+## 进度跟踪
+
+- [x] ~~已完成的里程碑~~
+- [ ] 当前里程碑
+```
+
+### 🔧 技术文档格式
+
+```python
+# Python代码示例
+client = genai.Client(api_key='...')
+response = client.models.generate_content(...)
+```
+
+关键API方法：`generate_content()`用于内容生成。
+
+```markdown
+%%开发注释：考虑添加错误处理%%
+```
+
+## 项目特定应用 (Project-Specific Applications)
+
+对于此项目的教案生成：
+
+### 📹 视频分析报告格式
+
+```markdown
+# YouTube视频教案
+
+## 视频信息
+- **标题**：[[视频标题]]
+- **时长**：XX分钟  
+- **关键概念**：==核心概念1==，==核心概念2==
+
+## 学习目标
+- [ ] 理解核心概念
+- [ ] 掌握实践技能
+
+## 重点内容
+
+> 重要观点或总结
+
+%%教师备注：重点关注学生反馈%%
+```
+
+## 质量检查清单 (Quality Checklist)
+
+转换完成后验证：
+
+- [ ] 链接格式正确使用`[[]]`
+- [ ] 文本格式化适当（粗体、斜体、高亮）
+- [ ] 任务列表可交互
+- [ ] 代码块包含语言标识
+- [ ] 脚注格式规范
+- [ ] 注释使用`%%`包围
+- [ ] 换行符合Obsidian规范
+- [ ] 整体结构清晰易读
+
+## 常见错误避免 (Common Mistakes to Avoid)
+
+❌ **错误做法**：
+
+```text
+[链接文本](http://example.com)  # 外部链接应保持标准格式
+*粗体文本*                      # 应使用**粗体文本**
+- 任务 [x]                     # 应使用- [x] 任务
+```
+
+✅ **正确做法**：
+
+```markdown
+[[内部链接]] 或 [外部链接](http://example.com)
+**粗体文本**
+- [x] 任务
+```
+
+遵循这些规则确保生成的Markdown完全兼容Obsidian，并充分利用其强大的知识管理功能。

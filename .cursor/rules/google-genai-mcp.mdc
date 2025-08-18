@@ -1,0 +1,75 @@
+---
+description: "Use MCP Contact7 for Google Gen AI Python SDK documentation when working with Gemini API integration"
+---
+
+# Google Gen AI SDK Integration with MCP Contact7
+
+When working with **Google Gemini API** or **Google Gen AI Python SDK** related content, always use MCP Contact7 to access up-to-date documentation.
+
+## 触发条件 (Trigger Conditions)
+
+Use MCP Contact7 when the conversation involves:
+
+- **Gemini API** integration, configuration, or usage
+- **google-genai** Python SDK methods and classes
+- **genai.Client()** initialization or configuration  
+- **client.models.generate_content()** method usage
+- **client.files.upload()** for video/file processing
+- **Google Gen AI SDK** error handling or troubleshooting
+- **gemini-2.5-flash** or other Gemini model configurations
+- **System instructions**, **safety settings**, or **function calling**
+- **Streaming responses** or **async operations** with Gemini
+- **Token counting**, **embeddings**, or **caching** features
+
+## 必需操作 (Required Actions)
+
+1. **First, resolve the library ID:**
+
+   ```text
+   Use mcp_context7_resolve-library-id with libraryName="google-genai"
+   ```
+
+2. **Then fetch documentation:**
+
+   ```text
+   Use mcp_context7_get-library-docs with the resolved library ID
+   ```
+
+3. **Specify relevant topics when possible:**
+   - For video processing: topic="files and uploads"
+   - For content generation: topic="generate content"
+   - For streaming: topic="streaming"
+   - For async operations: topic="async"
+   - For configuration: topic="client configuration"
+
+## 项目上下文 (Project Context)
+
+This project ([config.yaml](mdc:config.yaml)) uses:
+
+- **SDK Version**: `google-genai ^0.3.0`
+- **Default Model**: `gemini-2.5-flash`
+- **Core Service**: [gemini_service.py](mdc:src/gs_video_report/services/gemini_service.py)
+- **Configuration**: [config.py](mdc:src/gs_video_report/config.py)
+
+## 优先级 (Priority)
+
+- **HIGH**: Always use MCP Contact7 for Google Gen AI SDK questions
+- **MEDIUM**: Reference local code files for project-specific implementations
+- **LOW**: Use general knowledge only as fallback
+
+## 示例场景 (Example Scenarios)
+
+**Scenario 1**: User asks about video upload to Gemini
+→ Use MCP Contact7 with topic="files and uploads"
+
+**Scenario 2**: User needs help with generate_content configuration
+→ Use MCP Contact7 with topic="generate content"
+
+**Scenario 3**: User encounters SDK errors or wants to upgrade
+→ Use MCP Contact7 with topic="error handling" or relevant area
+
+## 文档源 (Documentation Source)
+
+- **Primary**: MCP Contact7 Google Gen AI Python SDK
+- **Reference URL**: <https://googleapis.github.io/python-genai>
+- **Always prefer MCP Contact7 over static documentation links**

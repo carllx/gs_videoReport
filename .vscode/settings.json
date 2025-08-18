@@ -1,0 +1,15 @@
+{
+  "yaml.validate": true,
+  "yaml.format.enable": true,
+  "yaml.completion": true,
+  "yaml.schemas": {
+    // 使用自定义 schema 验证 prompt template 文件
+    "./schemas/prompt-template.schema.json": [
+      "src/gs_video_report/templates/prompts/**/*.yaml"
+    ],
+    // 使用自定义 schema 验证配置文件
+    "./schemas/config.schema.json": [
+      "config.yaml*"
+    ]
+  }
+}

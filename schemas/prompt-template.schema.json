@@ -1,0 +1,100 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Video Report Prompt Template",
+  "description": "Schema for gs_videoReport prompt templates",
+  "type": "object",
+  "properties": {
+    "templates": {
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "$ref": "#/definitions/template"
+        }
+      }
+    },
+    "name": {
+      "type": "string",
+      "description": "Template name"
+    },
+    "version": {
+      "type": "string",
+      "description": "Template version"
+    },
+    "description": {
+      "type": "string",
+      "description": "Template description"
+    },
+    "parameters": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Template parameters"
+    },
+    "model_config": {
+      "type": "object",
+      "properties": {
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2
+        },
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "response_format": {
+          "type": "string"
+        }
+      },
+      "description": "Model configuration"
+    },
+    "prompt": {
+      "type": "string",
+      "description": "Template prompt content"
+    }
+  },
+  "definitions": {
+    "template": {
+      "type": "object",
+      "required": ["name", "version", "description", "prompt"],
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "parameters": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "model_config": {
+          "type": "object",
+          "properties": {
+            "temperature": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 2
+            },
+            "max_tokens": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "response_format": {
+              "type": "string"
+            }
+          }
+        },
+        "prompt": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}

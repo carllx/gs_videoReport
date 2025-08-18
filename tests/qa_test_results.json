@@ -1,0 +1,41 @@
+{
+  "start_time": "2025-08-18T17:40:59.317293",
+  "environment": {
+    "python_version": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+    "platform": "posix",
+    "working_directory": "/Users/yamlam/Documents/GitHub/gs_videoReport"
+  },
+  "test_cases": {
+    "TC000": {
+      "status": "FAILED",
+      "timestamp": "2025-08-18T17:41:00.695955",
+      "details": "关键依赖检查失败",
+      "performance": {
+        "python": {
+          "status": "OK",
+          "version": "Python 3.13.5"
+        },
+        "yt-dlp": {
+          "status": "OK",
+          "version": "2024.10.07"
+        },
+        "requests": {
+          "status": "OK",
+          "version": "2.32.4"
+        },
+        "chinese_transcript_template": {
+          "status": "ERROR",
+          "details": ""
+        }
+      }
+    }
+  },
+  "summary": {
+    "total": 1,
+    "passed": 0,
+    "failed": 1,
+    "skipped": 0
+  },
+  "end_time": "2025-08-18T17:41:00.696006",
+  "execution_time": "1.38 seconds"
+}
