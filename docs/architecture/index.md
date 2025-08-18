@@ -15,3 +15,4 @@
   - [6. 错误处理策略 (Error Handling Strategy)](./6-错误处理策略-error-handling-strategy.md)
   - [7. 测试策略 (Test Strategy)](./7-测试策略-test-strategy.md)
   - [8. 安全 (Security)](./8-安全-security.md)
+  - [9. 批量处理功能架构 (Batch Processing Architecture)](./batch_processing/README.md) *由@architect设计*
