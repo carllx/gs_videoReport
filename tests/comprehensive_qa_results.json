@@ -1,0 +1,170 @@
+{
+  "start_time": "2025-08-18T17:45:47.146127",
+  "environment": {
+    "python_version": "3.13.5 | packaged by Anaconda, Inc. | (main, Jun 12 2025, 11:23:37) [Clang 14.0.6 ]",
+    "platform": "posix",
+    "working_directory": "/Users/yamlam/Documents/GitHub/gs_videoReport",
+    "cpu_count": 8,
+    "total_memory_gb": 8.0
+  },
+  "test_suites": {
+    "TS001_Environment": {
+      "tests": {
+        "TC001_1_Python_Version": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:47.146665",
+          "details": "Python 3.13.5",
+          "performance": {}
+        },
+        "TC001_2_Dependencies": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:47.272442",
+          "details": "所有依赖包可用: ['yaml', 'requests', 'typer', 'pathlib']",
+          "performance": {}
+        },
+        "TC001_3_CLI_Import": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:47.888400",
+          "details": "CLI模块成功导入",
+          "performance": {}
+        }
+      },
+      "summary": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "TS002_CLI_Basic": {
+      "tests": {
+        "TC002_1_Version": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:48.468970",
+          "details": "版本信息正确: gs_videoReport\nVersion: 0.1.0-dev\nAI-powered video-to-lesson-plan converter",
+          "performance": {}
+        },
+        "TC002_2_Templates": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:49.051919",
+          "details": "模板列表正常，包含中文转录模板",
+          "performance": {}
+        },
+        "TC002_3_Help": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:49.630603",
+          "details": "帮助信息完整",
+          "performance": {}
+        }
+      },
+      "summary": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "TS004_Template_System": {
+      "tests": {
+        "TC004_comprehensive_lesson_exists": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:50.211812",
+          "details": "模板comprehensive_lesson存在于系统中",
+          "performance": {}
+        },
+        "TC004_summary_report_exists": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:50.818639",
+          "details": "模板summary_report存在于系统中",
+          "performance": {}
+        },
+        "TC004_chinese_transcript_exists": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:51.430156",
+          "details": "模板chinese_transcript存在于系统中",
+          "performance": {}
+        }
+      },
+      "summary": {
+        "total": 3,
+        "passed": 3,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "TS003_Error_Scenarios": {
+      "tests": {
+        "TC003_1_Invalid_API": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:52.511823",
+          "details": "无效API密钥处理正确",
+          "performance": {}
+        },
+        "TC003_2_Invalid_Video": {
+          "status": "FAILED",
+          "timestamp": "2025-08-18T17:45:53.151235",
+          "details": "无效视频文件处理异常: ",
+          "performance": {}
+        }
+      },
+      "summary": {
+        "total": 2,
+        "passed": 1,
+        "failed": 1,
+        "skipped": 0
+      }
+    },
+    "TS005_Performance": {
+      "tests": {
+        "TC005_1_Memory_Usage": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:55.935987",
+          "details": "内存使用正常",
+          "performance": {
+            "duration_seconds": 2.783534288406372,
+            "peak_memory_mb": 21.40625,
+            "average_memory_mb": 19.932291666666668,
+            "memory_samples_count": 3
+          }
+        }
+      },
+      "summary": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "skipped": 0
+      }
+    },
+    "TS006_User_Experience": {
+      "tests": {
+        "TC006_1_Error_Messages": {
+          "status": "PASSED",
+          "timestamp": "2025-08-18T17:45:56.702910",
+          "details": "错误信息友好清晰",
+          "performance": {}
+        },
+        "TC006_2_Help_Clarity": {
+          "status": "FAILED",
+          "timestamp": "2025-08-18T17:45:57.283816",
+          "details": "帮助信息不够详细，仅包含1个关键元素",
+          "performance": {}
+        }
+      },
+      "summary": {
+        "total": 2,
+        "passed": 1,
+        "failed": 1,
+        "skipped": 0
+      }
+    }
+  },
+  "summary": {
+    "total_tests": 14,
+    "passed_tests": 12,
+    "failed_tests": 2,
+    "skipped_tests": 0,
+    "total_suites": 6
+  },
+  "end_time": "2025-08-18T17:45:57.284028",
+  "execution_time": "10.14 seconds"
+}

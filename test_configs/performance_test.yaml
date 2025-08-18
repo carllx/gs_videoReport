@@ -1,0 +1,34 @@
+# Test Configuration - Performance Testing
+# 用于性能和稳定性测试
+
+google_api:
+  api_key: "AIzaSyCr_yrD6Dkcgx4VdNQA-awnBkzPg0SNVJI"
+  model: "gemini-2.5-flash"
+  temperature: 0.3
+  max_tokens: 8192
+  max_file_size_mb: 500  # 允许更大文件用于性能测试
+
+templates:
+  default_template: "comprehensive_lesson"  # 使用更复杂的模板
+  template_path: "src/gs_video_report/templates/prompts"
+
+output:
+  default_path: "./test_output/performance"
+  file_naming: "{video_title}_{timestamp}_perf"
+  include_metadata: true
+
+processing:
+  verbose: true
+  retry_attempts: 3
+  timeout_seconds: 1800  # 30分钟超时，用于长视频测试
+
+video:
+  max_duration_minutes: 180  # 允许处理3小时的视频
+  download_quality: "best"
+
+# 性能监控配置
+performance_monitoring:
+  track_memory_usage: true
+  track_processing_time: true
+  track_api_calls: true
+  generate_performance_report: true
