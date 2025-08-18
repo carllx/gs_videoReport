@@ -7,6 +7,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-01-27
+
+### Fixed
+- **CLI Parameter Consistency**: Added `--api-key` support to all commands (list-templates, setup-api)
+- **Enhanced Error Handling**: 
+  - Improved file path validation with detailed error messages
+  - Added permission checks and empty file detection
+  - Better error categorization (FileNotFoundError, ConnectionError, etc.)
+  - User-friendly solutions provided for each error type
+- **User Experience Improvements**:
+  - Enhanced help information with emojis and structured examples
+  - Better command descriptions and metavar specifications
+  - Improved error messages with actionable solutions
+  - More detailed progress feedback
+
+### Changed
+- Error messages now include helpful solution suggestions
+- CLI help text restructured for better readability
+- Configuration loading more robust when API key provided via CLI
+
+### Technical
+- Better exception handling in file validation
+- Improved configuration fallback mechanisms
+- Enhanced CLI parameter metadata
+
 ## [0.1.0] - 2025-01-27
 
 ### Added
