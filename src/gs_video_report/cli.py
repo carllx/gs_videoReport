@@ -3,6 +3,7 @@ Command Line Interface for gs_videoReport
 
 This module implements the CLI for processing YouTube videos and generating lesson plans.
 """
+import os
 import re
 import sys
 from pathlib import Path
@@ -23,8 +24,23 @@ from .file_writer import FileWriter, SuccessReporter
 # Initialize Typer app
 app = typer.Typer(
     name="gs_videoreport",
-    help="AI-powered video-to-lesson-plan converter for educators",
-    add_completion=False
+    help="""🎓 gs_videoReport v0.1.1 - AI-powered video-to-lesson-plan converter
+
+Transform your video content into structured educational materials using Google Gemini AI.
+
+QUICK START:
+  gs_videoreport video.mp4                    # Basic usage
+  gs_videoreport video.mp4 --verbose          # With detailed output  
+  gs_videoreport setup-api                    # First-time setup
+
+EXAMPLES:
+  gs_videoreport video.mp4 --template chinese_transcript
+  gs_videoreport video.mp4 --model gemini-2.5-pro --output ./lessons
+  gs_videoreport list-templates               # See available templates
+  
+For more help: https://github.com/carllx/gs_videoReport""",
+    add_completion=False,
+    rich_markup_mode="rich"
 )
 
 # Console for rich output
@@ -67,21 +83,40 @@ def validate_video_file(file_path: str) -> tuple[bool, Optional[str]]:
     """
     supported_formats = ['.mp4', '.mov', '.avi', '.mkv', '.webm']
     
-    file_path = Path(file_path)
+    try:
+        file_path = Path(file_path).resolve()  # Resolve absolute path
+    except (OSError, ValueError) as e:
+        return False, f"Invalid file path: {e}"
     
+    # Check if path exists
     if not file_path.exists():
-        return False, f"File not found: {file_path}"
+        return False, f"File not found: {file_path}\n💡 Please check the file path and try again."
     
+    # Check if it's actually a file (not a directory)
     if not file_path.is_file():
-        return False, f"Path is not a file: {file_path}"
+        return False, f"Path is not a file: {file_path}\n💡 Please provide a path to a video file, not a directory."
     
+    # Check file format
     if file_path.suffix.lower() not in supported_formats:
-        return False, f"Unsupported video format. Supported: {', '.join(supported_formats)}"
+        return False, (
+            f"Unsupported video format '{file_path.suffix}'.\n"
+            f"💡 Supported formats: {', '.join(supported_formats)}\n"
+            f"💡 Convert your video to a supported format or rename the file extension."
+        )
     
-    # Check file size (optional - warn if very large)
-    file_size_mb = file_path.stat().st_size / (1024 * 1024)
-    if file_size_mb > 1000:  # 1GB limit warning
-        return True, f"Warning: Large file ({file_size_mb:.1f}MB) - processing may take longer"
+    # Check file permissions
+    if not os.access(file_path, os.R_OK):
+        return False, f"Permission denied: Cannot read file {file_path}\n💡 Check file permissions and try again."
+    
+    # Check file size and warn if very large
+    try:
+        file_size_mb = file_path.stat().st_size / (1024 * 1024)
+        if file_size_mb == 0:
+            return False, f"File is empty: {file_path}\n💡 Please provide a valid video file."
+        elif file_size_mb > 1000:  # 1GB limit warning
+            return True, f"⚠️ Large file ({file_size_mb:.1f}MB) - processing may take longer"
+    except OSError as e:
+        return False, f"Cannot access file: {e}\n💡 File may be corrupted or inaccessible."
     
     return True, None
 
@@ -120,52 +155,74 @@ def check_url_accessibility(url: str) -> bool:
 
 @app.command()
 def main(
-    video_input: str = typer.Argument(..., help="YouTube video URL or local video file path to process"),
+    video_input: str = typer.Argument(
+        ..., 
+        help="📹 Local video file path to process (.mp4, .mov, .avi, .mkv, .webm)",
+        metavar="VIDEO_FILE"
+    ),
     template: Optional[str] = typer.Option(
         None, 
         "--template", 
         "-t", 
-        help="Template type to use for analysis"
+        help="📝 Template for analysis (comprehensive_lesson, summary_report, chinese_transcript)",
+        metavar="TEMPLATE"
     ),
     output: Optional[str] = typer.Option(
         None,
         "--output",
         "-o", 
-        help="Output directory for generated lesson plan"
+        help="📁 Output directory for generated lesson plan",
+        metavar="DIR"
     ),
     verbose: bool = typer.Option(
         False, 
         "--verbose", 
         "-v", 
-        help="Enable verbose output"
+        help="🔍 Enable detailed progress output"
     ),
     config_file: Optional[str] = typer.Option(
         None,
         "--config",
         "-c",
-        help="Path to configuration file"
+        help="⚙️  Path to configuration file",
+        metavar="FILE"
     ),
     api_key: Optional[str] = typer.Option(
         None,
         "--api-key",
         "-k",
-        help="Google Gemini API key (overrides env vars and config file)"
+        help="🔑 Google Gemini API key (highest priority)",
+        metavar="KEY"
     ),
     model: Optional[str] = typer.Option(
         None,
         "--model",
         "-m",
-        help="Gemini model to use (gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite)"
+        help="🤖 AI model to use (gemini-2.5-pro, gemini-2.5-flash, gemini-2.5-flash-lite)",
+        metavar="MODEL"
     )
 ):
     """
-    Process a YouTube video or local video file and generate a lesson plan.
+    🎓 Process a local video file and generate an AI-powered lesson plan.
     
-    Examples:
-        gs_videoreport video.mp4 --template chinese_transcript
+    SUPPORTED FORMATS:
+      .mp4, .mov, .avi, .mkv, .webm
+    
+    EXAMPLES:
+      📚 Basic usage:
+        gs_videoreport lecture.mp4
+        
+      🌟 Advanced usage:
+        gs_videoreport video.mp4 --template chinese_transcript --verbose
         gs_videoreport video.mp4 --model gemini-2.5-pro --api-key YOUR_KEY
-        gs_videoreport video.mp4 --template summary_report --output ./lessons
-        gs_videoreport video.mp4 --model gemini-2.5-flash-lite --verbose
+        gs_videoreport video.mp4 --output ./my_lessons --template summary_report
+    
+    FIRST TIME SETUP:
+      gs_videoreport setup-api    # Interactive API key setup
+      
+    GET HELP:
+      gs_videoreport list-templates  # See available templates
+      gs_videoreport list-models     # See available AI models
     """
     if verbose:
         console.print(f"[bold green]🚀 Starting gs_videoReport[/bold green]")
@@ -212,8 +269,16 @@ def main(
         config = Config.from_file(config_file)
         if verbose:
             rprint("[green]✅ Configuration loaded[/green]")
+    except FileNotFoundError as e:
+        rprint(f"[bold red]❌ Configuration File Not Found:[/bold red] {e}")
+        rprint("[yellow]💡 Solutions:[/yellow]")
+        rprint("   • Create a config file: cp config.yaml.example config.yaml")
+        rprint("   • Use --config option to specify a different config file")
+        rprint("   • Use --api-key option to bypass config file")
+        sys.exit(2)
     except Exception as e:
         rprint(f"[bold red]❌ Configuration Error:[/bold red] {e}")
+        rprint("[yellow]💡 Check your config.yaml file for syntax errors[/yellow]")
         sys.exit(2)
     
     # Override config with CLI parameters
@@ -245,8 +310,11 @@ def main(
         
         # Validate template exists
         if not template_mgr.has_template(template_name):
-            rprint(f"[bold red]❌ Error:[/bold red] Template '{template_name}' not found")
-            rprint("Use --list-templates to see available templates")
+            rprint(f"[bold red]❌ Template Not Found:[/bold red] '{template_name}' is not available")
+            rprint("[yellow]💡 Solutions:[/yellow]")
+            rprint("   • Use: gs_videoreport list-templates (to see available templates)")
+            rprint("   • Available templates: comprehensive_lesson, summary_report, chinese_transcript")
+            rprint("   • Check spelling and try again")
             sys.exit(1)
             
     except Exception as e:
@@ -373,13 +441,27 @@ def main(
             
         except ValueError as e:
             rprint(f"[bold red]❌ Configuration Error:[/bold red] {e}")
-            rprint("[yellow]💡 Tip: Make sure to set your Google API key in config.yaml[/yellow]")
+            rprint("[yellow]💡 Solutions:[/yellow]")
+            rprint("   • Set API key: gs_videoreport setup-api")
+            rprint("   • Use --api-key option: gs_videoreport video.mp4 --api-key YOUR_KEY")
+            rprint("   • Get API key: https://makersuite.google.com/app/apikey")
             sys.exit(3)
+        except ConnectionError as e:
+            rprint(f"[bold red]❌ Network Error:[/bold red] {e}")
+            rprint("[yellow]💡 Solutions:[/yellow]")
+            rprint("   • Check your internet connection")
+            rprint("   • Verify your API key is valid")
+            rprint("   • Try again in a few moments")
+            sys.exit(4)
         except Exception as e:
             rprint(f"[bold red]❌ Analysis Error:[/bold red] {e}")
+            rprint("[yellow]💡 Solutions:[/yellow]")
+            rprint("   • Try with a smaller video file")
+            rprint("   • Check video file is not corrupted") 
+            rprint("   • Use --verbose flag for more details")
             if verbose:
                 import traceback
-                rprint(f"[dim]{traceback.format_exc()}[/dim]")
+                rprint(f"[dim]Debug info: {traceback.format_exc()}[/dim]")
             sys.exit(4)
     else:
         # Should not reach here due to earlier exit, but keep for safety
@@ -392,12 +474,36 @@ def list_templates(
         None,
         "--config", 
         "-c",
-        help="Path to configuration file"
+        help="⚙️  Path to configuration file",
+        metavar="FILE"
+    ),
+    api_key: Optional[str] = typer.Option(
+        None,
+        "--api-key",
+        "-k",
+        help="🔑 Google Gemini API key (overrides env vars and config file)",
+        metavar="KEY"
     )
 ):
-    """List all available prompt templates."""
+    """📝 List all available prompt templates with descriptions and usage examples."""
     try:
-        config = Config.from_file(config_file)
+        # Try to load config, but don't fail if API key is provided via CLI
+        try:
+            config = Config.from_file(config_file)
+        except Exception:
+            if api_key:
+                # Create minimal config if API key provided via CLI
+                config = Config({
+                    'google_api': {'api_key': api_key},
+                    'templates': {'default_template': 'comprehensive_lesson'}
+                })
+            else:
+                raise
+        
+        # Override config with CLI API key if provided
+        if api_key:
+            config.set('google_api.api_key', api_key)
+        
         template_mgr = TemplateManager(config)
         templates = template_mgr.list_templates()
         
@@ -461,7 +567,14 @@ def list_models():
 
 
 @app.command()
-def setup_api():
+def setup_api(
+    config_file: Optional[str] = typer.Option(
+        None,
+        "--config",
+        "-c",
+        help="Path to configuration file"
+    )
+):
     """Interactive setup wizard for API key configuration."""
     rprint("[bold cyan]🔧 API Key Setup Wizard[/bold cyan]")
     rprint()
@@ -479,7 +592,7 @@ def setup_api():
     
     # Check config file
     try:
-        config = Config.from_file()
+        config = Config.from_file(config_file)
         config_key = config.get('google_api.api_key')
         if config_key and config_key not in ['YOUR_GEMINI_API_KEY_HERE', 'DEMO_API_KEY_FOR_TESTING']:
             current_sources.append(f"Config file: {config_key[:15]}...")
@@ -588,7 +701,7 @@ video:
 def version():
     """Show version information."""
     rprint("[bold cyan]gs_videoReport[/bold cyan]")
-    rprint("Version: 0.1.0-dev") 
+    rprint("Version: 0.1.1") 
     rprint("AI-powered video-to-lesson-plan converter")
 
 
