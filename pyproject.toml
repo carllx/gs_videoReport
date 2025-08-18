@@ -12,6 +12,9 @@ typer = "^0.12.0"        # CLI 框架
 pyyaml = "^6.0"          # 配置文件解析
 yt-dlp = "^2025.1.26"    # YouTube 视频下载
 httpx = "^0.27.0"        # HTTP 客户端 (google-genai 依赖)
+rich = "^13.0.0"         # Rich CLI output
+requests = "^2.31.0"     # HTTP requests for URL validation
+aiohttp = {version = "^3.9.0", optional = true}  # 异步HTTP客户端（可选）
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.2.0"        # 测试框架
