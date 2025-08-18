@@ -79,3 +79,6 @@ tmp/
 *.tmp
 *.bak
 *.swp
+# Python cache files
+__pycache__/
+*.pyc
