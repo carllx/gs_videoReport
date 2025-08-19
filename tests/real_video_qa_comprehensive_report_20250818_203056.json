@@ -1,0 +1,189 @@
+{
+  "real_video_qa_execution_report": {
+    "metadata": {
+      "agent_role": "@qa.mdc",
+      "test_suite": "real_figma_videos_batch_processing_qa",
+      "video_source": "test_videos/ - 20个真实Figma教程视频",
+      "execution_timestamp": "2025-08-18T20:30:56.738164",
+      "total_duration_seconds": 40.77214002609253,
+      "project_root": "/Users/yamlam/Documents/GitHub/gs_videoReport",
+      "test_videos_directory": "/Users/yamlam/Documents/GitHub/gs_videoReport/test_videos"
+    },
+    "executive_summary": {
+      "total_tests_executed": 5,
+      "overall_pass_rate": 0.8,
+      "critical_tests_status": "1/1 CRITICAL tests passed",
+      "high_priority_status": "3/4 HIGH priority tests passed",
+      "overall_verdict": "FAIL",
+      "ready_for_production": false
+    },
+    "detailed_results": {
+      "passed": 4,
+      "failed": 1,
+      "errors_timeouts": 0,
+      "total_execution_time_minutes": 0.6795356671015421,
+      "average_test_duration_seconds": 8.154428005218506
+    },
+    "test_breakdown_by_category": {
+      "基础验证": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "avg_duration": 1.1513330936431885,
+        "tests": [
+          "真实视频文件验证"
+        ],
+        "pass_rate": 1.0
+      },
+      "可靠性测试": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "avg_duration": 7.143816947937012,
+        "tests": [
+          "真实视频错误隔离机制"
+        ],
+        "pass_rate": 1.0
+      },
+      "错误恢复": {
+        "total": 1,
+        "passed": 0,
+        "failed": 1,
+        "avg_duration": 10.010530948638916,
+        "tests": [
+          "真实视频重试机制"
+        ],
+        "pass_rate": 0.0
+      },
+      "断点续传": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "avg_duration": 1.033231258392334,
+        "tests": [
+          "真实视频断点续传"
+        ],
+        "pass_rate": 1.0
+      },
+      "性能基准": {
+        "total": 1,
+        "passed": 1,
+        "failed": 0,
+        "avg_duration": 21.432405948638916,
+        "tests": [
+          "真实视频性能基准"
+        ],
+        "pass_rate": 1.0
+      }
+    },
+    "performance_insights": {
+      "status": "No performance tests executed"
+    },
+    "test_execution_details": [
+      {
+        "test_case": {
+          "name": "真实视频文件验证",
+          "module": "test_batch_real_videos.py",
+          "class": "TestBatchProcessingWithRealVideos",
+          "method": "test_real_video_files_validation",
+          "priority": "HIGH",
+          "category": "基础验证",
+          "description": "验证20个Figma教程视频文件的完整性和有效性"
+        },
+        "status": "PASS",
+        "duration_seconds": 1.1513330936431885,
+        "stdout": "============================= test session starts ==============================\ncollecting ... collected 1 item\n\ntests/test_batch_real_videos.py::TestBatchProcessingWithRealVideos::test_real_video_files_validation 📁 发现 20 个真实Figma教程视频\n✅ 真实视频文件验证通过:\n   📁 文件数量: 20\n   📊 总大小: 137.9MB\n   📈 平均大小: 6.9MB/文件\nPASSED\n\n============================== 1 passed in 0.66s ===============================\n",
+        "stderr": "",
+        "return_code": 0,
+        "execution_timestamp": "2025-08-18T20:30:17.117390"
+      },
+      {
+        "test_case": {
+          "name": "真实视频错误隔离机制",
+          "module": "test_batch_real_videos.py",
+          "class": "TestBatchProcessingWithRealVideos",
+          "method": "test_real_video_error_isolation",
+          "priority": "HIGH",
+          "category": "可靠性测试",
+          "description": "使用真实视频验证单个视频失败不影响其他视频处理"
+        },
+        "status": "PASS",
+        "duration_seconds": 7.143816947937012,
+        "stdout": "============================= test session starts ==============================\ncollecting ... collected 1 item\n\ntests/test_batch_real_videos.py::TestBatchProcessingWithRealVideos::test_real_video_error_isolation 📁 发现 20 个真实Figma教程视频\n📁 发现 20 个视频文件\n✅ [1/20] 001 - introduction-to-figma-essentials-training-course.mp4.mp4\n✅ [2/20] 002 - getting-started-with-figma-training.mp4.mp4\n✅ [3/20] 003 - what-is-figma-for-does-it-do-the-coding.mp4.mp4\n⚠️  网络错误，1秒后第2次重试: 004 - whats-the-difference-between-ui-and-ux-in-figma.mp4.mp4\n✅ [4/20] 004 - whats-the-difference-between-ui-and-ux-in-figma.mp4.mp4\n✅ [5/20] 005 - what-we-are-making-in-this-figma-course.mp4.mp4\n✅ [6/20] 006 - class-project-001-create-your-own-brief.mp4.mp4\n⚠️  网络错误，1秒后第2次重试: 007 - what-is-lo-fi-wireframe-vs-high-fidelity-in-figma.mp4.mp4\n✅ [7/20] 007 - what-is-lo-fi-wireframe-vs-high-fidelity-in-figma.mp4.mp4\n✅ [8/20] 008 - creating-our-design-file-introducing-frames-in-figma.mp4.mp4\n✅ [9/20] 009 - the-basics-of-type-fonts-in-figma.mp4_2.mp4\n⚠️  网络错误，1秒后第2次重试: 010 - rectangles-circles-buttons-rounded-corners-in-figma.mp4.mp4\n✅ [10/20] 010 - rectangles-circles-buttons-rounded-corners-in-figma.mp4.mp4\n✅ [11/20] 011 - how-to-use-color-in-figma.mp4.mp4\n✅ [12/20] 012 - strokes-plus-updating-color-defaults-in-figma.mp4.mp4\n⚠️  网络错误，1秒后第2次重试: 013 - object-editing-and-how-to-escape-in-figma.mp4.mp4\n✅ [13/20] 013 - object-editing-and-how-to-escape-in-figma.mp4.mp4\n✅ [14/20] 014 - scale-vs-selection-tool-in-figma.mp4.mp4\n✅ [15/20] 015 - frames-vs-groups-in-figma.mp4.mp4\n⚠️  网络错误，1秒后第2次重试: 016 - class-project-002-wireframe.mp4.mp4\n✅ [16/20] 016 - class-project-002-wireframe.mp4.mp4\n✅ [17/20] 017 - where-to-get-free-icons-for-figma.mp4.mp4\n✅ [18/20] 018 - matching-the-stroke-of-our-icons.mp4.mp4\n⚠️  网络错误，1秒后第2次重试: 019 - how-to-use-plugins-in-figma-for-icons.mp4.mp4\n✅ [19/20] 019 - how-to-use-plugins-in-figma-for-icons.mp4.mp4\n✅ [20/20] 020 - class-project-003-icons.mp4.mp4\n  处理: 020 - class-project-003-icons.mp4.mp4 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:06\n✅ 错误隔离测试通过 - 成功: 20, 失败: 0\nPASSED\n\n============================== 1 passed in 6.54s ===============================\n",
+        "stderr": "",
+        "return_code": 0,
+        "execution_timestamp": "2025-08-18T20:30:24.261396"
+      },
+      {
+        "test_case": {
+          "name": "真实视频重试机制",
+          "module": "test_batch_real_videos.py",
+          "class": "TestBatchProcessingWithRealVideos",
+          "method": "test_real_video_retry_mechanism",
+          "priority": "HIGH",
+          "category": "错误恢复",
+          "description": "验证网络错误时的智能重试和指数退避策略"
+        },
+        "status": "FAIL",
+        "duration_seconds": 10.010530948638916,
+        "stdout": "============================= test session starts ==============================\ncollecting ... collected 1 item\n\ntests/test_batch_real_videos.py::TestBatchProcessingWithRealVideos::test_real_video_retry_mechanism 📁 发现 20 个真实Figma教程视频\n📁 发现 3 个视频文件\n⚠️  网络错误，1秒后第2次重试: 006 - class-project-001-create-your-own-brief.mp4.mp4\n⚠️  网络错误，2秒后第3次重试: 006 - class-project-001-create-your-own-brief.mp4.mp4\n✅ [1/3] 006 - class-project-001-create-your-own-brief.mp4.mp4\n⚠️  网络错误，1秒后第2次重试: 012 - strokes-plus-updating-color-defaults-in-figma.mp4.mp4\n⚠️  网络错误，2秒后第3次重试: 012 - strokes-plus-updating-color-defaults-in-figma.mp4.mp4\n✅ [2/3] 012 - strokes-plus-updating-color-defaults-in-figma.mp4.mp4\n⚠️  网络错误，1秒后第2次重试: 016 - class-project-002-wireframe.mp4.mp4\n⚠️  网络错误，2秒后第3次重试: 016 - class-project-002-wireframe.mp4.mp4\n✅ [3/3] 016 - class-project-002-wireframe.mp4.mp4\n  处理: 016 - class-project-002-wireframe.mp4.mp4 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:09\nFAILED\n\n=================================== FAILURES ===================================\n______ TestBatchProcessingWithRealVideos.test_real_video_retry_mechanism _______\ntests/test_batch_real_videos.py:193: in test_real_video_retry_mechanism\n    assert actual_duration >= expected_min_delay * 0.8, f\"重试延迟时间不足: {actual_duration:.2f}s < {expected_min_delay}s\"\nE   AssertionError: 重试延迟时间不足: 9.05s < 21s\nE   assert 9.051538944244385 >= (21 * 0.8)\n=========================== short test summary info ============================\nFAILED tests/test_batch_real_videos.py::TestBatchProcessingWithRealVideos::test_real_video_retry_mechanism\n============================== 1 failed in 9.59s ===============================\n",
+        "stderr": "",
+        "return_code": 1,
+        "execution_timestamp": "2025-08-18T20:30:34.272087"
+      },
+      {
+        "test_case": {
+          "name": "真实视频断点续传",
+          "module": "test_batch_real_videos.py",
+          "class": "TestBatchProcessingWithRealVideos",
+          "method": "test_real_video_skip_existing",
+          "priority": "HIGH",
+          "category": "断点续传",
+          "description": "验证--skip-existing参数的断点续传功能"
+        },
+        "status": "PASS",
+        "duration_seconds": 1.033231258392334,
+        "stdout": "============================= test session starts ==============================\ncollecting ... collected 1 item\n\ntests/test_batch_real_videos.py::TestBatchProcessingWithRealVideos::test_real_video_skip_existing 📁 发现 20 个真实Figma教程视频\n📁 发现 5 个视频文件\n✅ [1/5] 004 - whats-the-difference-between-ui-and-ux-in-figma.mp4.mp4\n✅ [2/5] 006 - class-project-001-create-your-own-brief.mp4.mp4\n⏭️  [3/5] 012 - strokes-plus-updating-color-defaults-in-figma.mp4.mp4 (已存在)\n✅ [4/5] 014 - scale-vs-selection-tool-in-figma.mp4.mp4\n⏭️  [5/5] 016 - class-project-002-wireframe.mp4.mp4 (已存在)\n  处理: 016 - class-project-002-wireframe.mp4.mp4 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:00\n✅ 跳过已存在文件测试通过 - 跳过: 2, 新处理: 3\nPASSED\n\n============================== 1 passed in 0.59s ===============================\n",
+        "stderr": "",
+        "return_code": 0,
+        "execution_timestamp": "2025-08-18T20:30:35.305453"
+      },
+      {
+        "test_case": {
+          "name": "真实视频性能基准",
+          "module": "test_batch_real_videos.py",
+          "class": "TestBatchProcessingWithRealVideos",
+          "method": "test_real_video_performance_benchmark",
+          "priority": "CRITICAL",
+          "category": "性能基准",
+          "description": "建立20个真实Figma视频的性能处理基准"
+        },
+        "status": "PASS",
+        "duration_seconds": 21.432405948638916,
+        "stdout": "============================= test session starts ==============================\ncollecting ... collected 1 item\n\ntests/test_batch_real_videos.py::TestBatchProcessingWithRealVideos::test_real_video_performance_benchmark 📁 发现 20 个真实Figma教程视频\n📁 发现 20 个视频文件\n✅ [1/20] 001 - introduction-to-figma-essentials-training-course.mp4.mp4\n✅ [2/20] 002 - getting-started-with-figma-training.mp4.mp4\n✅ [3/20] 003 - what-is-figma-for-does-it-do-the-coding.mp4.mp4\n✅ [4/20] 004 - whats-the-difference-between-ui-and-ux-in-figma.mp4.mp4\n✅ [5/20] 005 - what-we-are-making-in-this-figma-course.mp4.mp4\n✅ [6/20] 006 - class-project-001-create-your-own-brief.mp4.mp4\n✅ [7/20] 007 - what-is-lo-fi-wireframe-vs-high-fidelity-in-figma.mp4.mp4\n✅ [8/20] 008 - creating-our-design-file-introducing-frames-in-figma.mp4.mp4\n✅ [9/20] 009 - the-basics-of-type-fonts-in-figma.mp4_2.mp4\n✅ [10/20] 010 - rectangles-circles-buttons-rounded-corners-in-figma.mp4.mp4\n✅ [11/20] 011 - how-to-use-color-in-figma.mp4.mp4\n✅ [12/20] 012 - strokes-plus-updating-color-defaults-in-figma.mp4.mp4\n✅ [13/20] 013 - object-editing-and-how-to-escape-in-figma.mp4.mp4\n✅ [14/20] 014 - scale-vs-selection-tool-in-figma.mp4.mp4\n✅ [15/20] 015 - frames-vs-groups-in-figma.mp4.mp4\n✅ [16/20] 016 - class-project-002-wireframe.mp4.mp4\n✅ [17/20] 017 - where-to-get-free-icons-for-figma.mp4.mp4\n✅ [18/20] 018 - matching-the-stroke-of-our-icons.mp4.mp4\n✅ [19/20] 019 - how-to-use-plugins-in-figma-for-icons.mp4.mp4\n✅ [20/20] 020 - class-project-003-icons.mp4.mp4\n  处理: 020 - class-project-003-icons.mp4.mp4 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 100% 0:00:20\n✅ 真实视频性能基准测试通过:\n   📊 视频数量: 20\n   ⏱️  总处理时间: 20.5秒\n   🚀 吞吐量: 58.55 files/min\n   📈 平均每视频: 1.02秒\n   📄 基准报告: /Users/yamlam/Documents/GitHub/gs_videoReport/tests/real_video_performance_benchmark.json\nPASSED\n\n============================== 1 passed in 21.01s ==============================\n",
+        "stderr": "",
+        "return_code": 0,
+        "execution_timestamp": "2025-08-18T20:30:56.738052"
+      }
+    ],
+    "quality_assessment": {
+      "overall_quality_score": 75,
+      "quality_grade": "C",
+      "core_functionality_status": {
+        "error_isolation": "PASS",
+        "retry_mechanism": "FAIL",
+        "performance_benchmark": "PASS"
+      },
+      "production_readiness": false,
+      "areas_of_concern": [
+        "真实视频重试机制"
+      ]
+    },
+    "recommendations": [
+      "⚠️ 发现真实视频测试失败，需要修复",
+      "🔍 修复 错误恢复 类别的 '真实视频重试机制' 测试",
+      "📊 当前基准基于20个真实Figma教程视频，可扩展到更大批量",
+      "🎯 建议在真实API环境下进行最终验收测试"
+    ]
+  }
+}

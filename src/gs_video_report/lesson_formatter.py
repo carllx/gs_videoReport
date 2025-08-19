@@ -181,6 +181,12 @@ class LessonFormatter:
         else:
             logger.warning(f"Template directory not found: {template_path}")
             self.jinja_env = Environment()
+    
+    def _get_api_model(self) -> str:
+        """获取API模型配置"""
+        # 🎯 统一配置：使用统一的模型配置获取函数
+        from .config import get_default_model
+        return get_default_model(self.config.data)
             
     def format_lesson_plan(self, gemini_result: Dict[str, Any], 
                           video_url: str = "",
@@ -267,7 +273,8 @@ class LessonFormatter:
             'related_resources': lesson_data.related_resources,
             
             # Generation metadata
-            'api_model': self.config.data.get('google_api', {}).get('model', 'gemini-2.5-flash'),
+            # 🎯 统一配置：使用统一的模型配置获取函数
+            'api_model': self._get_api_model(),
             'generation_timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
             'tags_list': lesson_data._generate_tags()
         }

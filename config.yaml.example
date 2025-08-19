@@ -1,59 +1,117 @@
 # yaml-language-server: $schema=./schemas/config.schema.json
 # gs_videoReport 配置文件示例
-# 复制此文件为 config.yaml 并填入您的实际配置信息
+# 🔒 重要安全提醒：复制此文件为 config.yaml 并填入您的实际配置信息
+# ⚠️  绝不要将包含真实API密钥的config.yaml文件提交到版本控制！
 
-# ===== 基础配置 =====
-api_key: "your-gemini-api-key-here"
-model_name: "gemini-2.5-flash"
-default_output_path: "./outputs/"
-default_prompt_template: "comprehensive_lesson"
+# ===== Google API 配置 =====
+google_api:
+  api_key: "YOUR_GEMINI_API_KEY_HERE"  # 从 https://makersuite.google.com/app/apikey 获取
+  model: "gemini-2.5-pro"              # 🚨 QA测试专用：必须使用 gemini-2.5-pro
+  temperature: 0.7                      # 模型温度 (0.0-2.0)
+  max_tokens: 8192                      # 最大输出tokens
+
+# ===== 多API密钥轮循配置 =====
+# 🔄 多密钥轮循模式：当一个密钥配额用完时自动切换到下一个
+# 💡 提示：多个免费密钥可以大幅提升日处理能力（100请求 x N个密钥）
+multi_api_keys:
+  enabled: false                       # 是否启用多密钥轮循模式
+  # 🔑 API密钥列表（可以公开，无需保密）
+  api_keys:
+    # - "AIzaSyA7MrCt8pb81qTQat-SoPTQ6b1_v3PXiPo"  # 示例密钥1
+    # - "AIzaSyB8NrCt9qc92rTQbu-TpQR7c2_w4QYjPq"  # 示例密钥2  
+    # - "AIzaSyC9OrDt0rd03sTQcv-UpRS8d3_x5RZkQr"  # 示例密钥3
+  # 📊 使用统计配置
+  usage_tracking:
+    log_path: "logs/api_key_usage.json" # 使用统计JSON日志路径
+    enable_console_report: true         # 是否显示控制台使用报告
+  # 🔄 轮换策略配置
+  rotation_strategy:
+    auto_rotate_on_quota_exhausted: true  # 配额耗尽时自动轮换
+    max_consecutive_failures: 5          # 连续失败多少次后标记为不健康
+    health_check_enabled: true           # 启用密钥健康检查
+
+# 🚨 QA测试专用配置 - 统一设置
+qa_testing:
+  input_directory: "test_videos"       # 强制输入目录
+  output_directory: "test_output"      # 强制输出目录  
+  template: "chinese_transcript"       # 强制使用模板
+  model: "gemini-2.5-pro"             # 强制使用模型
+
+# 兼容性设置（保持向后兼容）
+default_output_path: "./output/"        # 输出文件目录（已被qa_testing覆盖）
+default_prompt_template: "comprehensive_lesson"  # 默认模板（已被qa_testing覆盖）
 
 # ===== 认证配置 =====
-# 默认认证类型: "api_key" 或 "oauth"
-# 系统会根据视频类型和用户参数自动选择合适的认证方式
-auth_type: "api_key"
+auth_type: "api_key"                    # 认证类型: "api_key" 或 "oauth"
 
 # OAuth 2.0 配置（用于访问私有YouTube视频）
-# 如需访问私有视频，请在 Google Cloud Console 中创建OAuth 2.0客户端ID
-oauth:
-  client_id: "your-google-oauth-client-id"
-  client_secret: "your-google-oauth-client-secret"
-  # 以下字段将由系统自动管理，请勿手动修改
-  # access_token: "auto-managed"
-  # refresh_token: "auto-managed" 
-  # token_expiry: "auto-managed"
+# 🔐 仅在需要访问私有视频时启用，请在 Google Cloud Console 中创建OAuth 2.0客户端ID
+# oauth:
+#   client_id: "your-google-oauth-client-id.apps.googleusercontent.com"
+#   client_secret: "GOCSPX-your-oauth-client-secret"
+#   # 以下字段由系统自动管理，请勿手动修改
+#   # access_token: "auto-managed"
+#   # refresh_token: "auto-managed" 
+#   # token_expiry: "auto-managed"
 
 # ===== 高级配置 =====
 # 视频处理配置
 video_processing:
-  max_file_size_mb: 2048  # 最大文件大小限制
-  supported_formats: ["mp4", "avi", "mov", "mkv", "webm"]
-  upload_timeout_seconds: 300  # 上传超时时间
+  max_file_size_mb: 100                 # 最大文件大小限制(MB)
+  supported_formats: ["mp4", "mov", "avi", "mkv", "webm", "m4v"]
+  upload_timeout_seconds: 300           # 上传超时时间(秒)
 
 # API调用配置
 api_config:
-  max_retries: 3
-  timeout_seconds: 120
-  temperature: 0.1
-  max_output_tokens: 8192
+  max_retries: 3                        # 最大重试次数
+  timeout_seconds: 300                  # API超时时间(秒)
+  temperature: 0.7                      # API调用温度
+  max_output_tokens: 8192               # API最大输出tokens
 
 # 输出配置
 output_config:
-  include_timestamps: true
-  timestamp_format: "youtube"  # "youtube" 或 "standard"
-  obsidian_compatibility: true
+  include_timestamps: true              # 包含时间戳
+  timestamp_format: "youtube"           # 时间戳格式: "youtube" 或 "standard"
+  obsidian_compatibility: true          # Obsidian兼容性
   
 # 错误处理配置  
 error_handling:
-  auto_retry_on_network_error: true
-  show_detailed_errors: false  # 设为true以显示详细错误信息
-  log_api_calls: false  # 设为true以记录API调用日志
+  auto_retry_on_network_error: true     # 网络错误自动重试
+  show_detailed_errors: false           # 显示详细错误信息
+  log_api_calls: false                  # 记录API调用日志
 
-# ===== OAuth设置说明 =====
-# 要启用私有视频访问功能：
+# ===== 批量处理配置 (v2.1新增：动态并行) =====
+# batch_processing:
+#   parallel_workers: 2                 # 单密钥模式默认并发数（多密钥模式将基于API密钥数量自动调整）
+#   enable_resume: true                 # 启用断点续传
+#   checkpoint_interval: 10             # 检查点保存间隔
+#   api_rate_limit: 60                  # API每分钟限制
+#   adaptive_concurrency: false         # 自适应并发控制
+#
+# 💡 动态并行说明：
+#   - 单密钥模式：使用配置的parallel_workers值（默认2）
+#   - 多密钥模式：基于API密钥数量自动设置（N个密钥=N个并行，最大8个）
+#   - 安全保障：最多8个并行worker，防止系统过载和网络拥塞
+
+# ===== 安全设置指南 =====
+# 🔒 API密钥安全：
+# 1. 从 https://makersuite.google.com/app/apikey 获取您的Gemini API密钥
+# 2. 将 YOUR_GEMINI_API_KEY_HERE 替换为您的真实API密钥
+# 3. 确保config.yaml文件已被.gitignore忽略
+# 4. 绝不要在公共场所（论坛、聊天、邮件）分享您的API密钥
+# 5. 定期轮换API密钥以提高安全性
+
+# 🔐 OAuth 2.0 设置（可选）：
+# 仅在需要访问私有YouTube视频时配置
 # 1. 访问 https://console.cloud.google.com/
 # 2. 创建新项目或选择现有项目
 # 3. 启用 YouTube Data API v3
 # 4. 创建 OAuth 2.0 客户端ID（应用类型：桌面应用程序）
-# 5. 将客户端ID和客户端机密填入上述oauth配置中
-# 6. 首次运行时系统会自动引导您完成授权流程
+# 5. 下载client_secret.json文件并提取client_id和client_secret
+# 6. 取消注释上方oauth配置块并填入真实信息
+# 7. 首次运行时系统会自动引导您完成授权流程
+
+# 🛡️ 环境变量支持：
+# 您也可以通过环境变量设置API密钥（更安全）：
+# export GOOGLE_GEMINI_API_KEY="your-api-key-here"
+# export GEMINI_API_KEY="your-api-key-here"    # 备用环境变量名

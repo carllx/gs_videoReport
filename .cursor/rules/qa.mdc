@@ -1,0 +1,75 @@
+---
+alwaysApply: true
+description: "QA测试专用规则 - 强制使用Google Gemini 2.5 Pro和固定目录"
+---
+
+# 🚨 QA测试专用规则 - 强制执行
+
+## 🎯 统一配置原则 (Single Source of Truth)
+
+### 📍 一处配置，多处执行
+所有配置现在通过[config.py](mdc:src/gs_video_report/config.py)中的统一函数管理：
+- `get_default_model()` - 模型配置
+- `get_default_input_directory()` - 输入目录配置  
+- `get_default_output_directory()` - 输出目录配置
+- `get_default_template()` - 模板配置
+
+### 🔧 配置文件结构
+在[config.yaml](mdc:config.yaml.example)中必须设置：
+```yaml
+qa_testing:
+  input_directory: "test_videos"       # 强制输入目录
+  output_directory: "test_output"      # 强制输出目录  
+  template: "chinese_transcript"       # 强制使用模板
+  model: "gemini-2.5-pro"             # 强制使用模型
+```
+
+## 🤖 AI模型要求（绝对强制）
+
+### Google Gemini 2.5 Pro
+- **必须使用**: `Google Gemini 2.5 Pro`
+- ⚠️ **严格禁止**：Gemini 1.5 Pro、Gemini Flash、或任何其他版本
+- 🎯 **统一管理**: 通过`get_default_model()`函数获取
+
+## 📁 测试目录（绝对强制）
+- **输入目录**: [test_videos/](mdc:test_videos/) - 包含20个真实Figma教学视频
+- **输出目录**: [test_output/](mdc:test_output/) - 所有处理结果必须保存在此
+- 🎯 **统一管理**: 通过配置函数获取，不允许硬编码
+- ⚠️ **禁止使用其他目录**
+
+## 📝 标准测试命令
+
+### 单视频测试（使用Gemini 2.5 Pro）
+```bash
+python -m src.gs_video_report.cli.app single test_videos/[视频文件] --output test_output --verbose
+```
+
+### 批量处理测试（使用Gemini 2.5 Pro）
+```bash  
+python -m src.gs_video_report.cli.app batch test_videos --output test_output --verbose
+```
+
+## 🔒 并发控制要求
+- **最大并发数**: 2个视频同时处理
+- **目的**: 防止网络拥塞和API Token浪费
+- **实现**: 在[config.yaml](mdc:config.yaml.example)中设置 `parallel_workers: 2`
+
+## ✅ 质量检查点
+
+每次测试必须验证：
+1. ✅ 使用的是Google Gemini 2.5 Pro（非1.5 Pro或Flash）
+2. ✅ 输入来自[test_videos/](mdc:test_videos/)目录
+3. ✅ 输出保存到[test_output/](mdc:test_output/)目录
+4. ✅ 最多2个视频并发处理
+5. ✅ 可以正确处理Ctrl+C中断
+6. ✅ 支持断点续传功能
+
+## 🚨 违规处理
+如果发现违反上述规则：
+1. **立即停止测试**
+2. **修正配置文件**
+3. **重新开始测试**
+4. **记录违规原因**
+
+---
+*此规则确保QA测试使用正确的Google Gemini 2.5 Pro模型和标准目录*

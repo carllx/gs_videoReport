@@ -60,12 +60,26 @@ htmlcov/
 *api_key*
 *secret*
 *token*
+.env
 .env.local
 .env.production
+.env.development
+credentials.json
+client_secret*.json
+*.key
+*.pem
+oauth_token*
+
+# Security checkpoints and state files
+batch_checkpoints/
+*_checkpoint.json
+*_state.json
 
 # Output files
 output/
-test_output/
+# 保留test_output文件夹结构，但忽略其内容
+test_output/*
+!test_output/.gitkeep
 *.mp4
 *.mov
 *.avi
@@ -82,3 +96,4 @@ tmp/
 # Python cache files
 __pycache__/
 *.pyc
+batch_states/

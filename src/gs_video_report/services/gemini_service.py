@@ -89,7 +89,8 @@ class GeminiService:
         try:
             # Initialize client with API key for Gemini Developer API (supports file upload)
             # Based on Google Gen AI SDK documentation: file upload is only supported in Gemini Developer client
-            self._client = genai.Client(api_key=api_key)
+            # For 0.3.0: Need to explicitly specify vertexai=False to use Gemini Developer API
+            self._client = genai.Client(api_key=api_key, vertexai=False)
             logger.info("Gemini Developer client initialized successfully")
         except Exception as e:
             logger.error(f"Failed to initialize Gemini client: {e}")
@@ -159,9 +160,9 @@ class GeminiService:
         try:
             console.print(f"[yellow]📤 Uploading video file: {video_file.name}[/yellow]")
             
-            # Upload using the latest SDK API
+            # Upload using the SDK API v0.3.0 syntax
             uploaded_file = self.client.files.upload(
-                file=str(video_path),
+                path=str(video_path),
                 config=types.UploadFileConfig(
                     display_name=display_name,
                     mime_type=self._get_mime_type(video_file.suffix)
@@ -194,42 +195,37 @@ class GeminiService:
         """
         start_time = time.time()
         
-        with Progress(
-            SpinnerColumn(),
-            TextColumn("[progress.description]{task.description}"),
-            BarColumn(),
-            TimeElapsedColumn(),
-            console=console
-        ) as progress:
-            task = progress.add_task("Processing video file...", total=None)
+        # 🎯 移除Rich Progress以避免并发冲突
+        console.print(f"[cyan]⠋ Processing video file...[/cyan]", end="")
+        
+        while True:
+            # Check elapsed time
+            elapsed = time.time() - start_time
+            if elapsed > timeout_seconds:
+                raise TimeoutError(f"File processing timeout after {timeout_seconds} seconds")
             
-            while True:
-                # Check elapsed time
-                elapsed = time.time() - start_time
-                if elapsed > timeout_seconds:
-                    raise TimeoutError(f"File processing timeout after {timeout_seconds} seconds")
-                
-                # Get current file status
-                try:
-                    file_info = self.client.files.get(name=uploaded_file.name)
+            # Get current file status
+            try:
+                file_info = self.client.files.get(name=uploaded_file.name)
                     
-                    if file_info.state == types.FileState.ACTIVE:
-                        progress.update(task, description="✅ File ready for analysis")
-                        console.print(f"[green]✅ Video file processed and ready for analysis[/green]")
-                        return file_info
-                    elif file_info.state == types.FileState.FAILED:
-                        raise Exception(f"File processing failed: {file_info.error}")
-                    elif file_info.state == types.FileState.PROCESSING:
-                        progress.update(task, description=f"🔄 Processing... ({elapsed:.0f}s)")
-                    else:
-                        progress.update(task, description=f"⏳ Status: {file_info.state} ({elapsed:.0f}s)")
-                    
-                except Exception as e:
-                    logger.error(f"Error checking file status: {e}")
-                    raise Exception(f"Failed to check file processing status: {e}")
+                # Use string comparison for file state in v0.3.0
+                if file_info.state == "ACTIVE":
+                    progress.update(task, description="✅ File ready for analysis")
+                    console.print(f"[green]✅ Video file processed and ready for analysis[/green]")
+                    return file_info
+                elif file_info.state == "FAILED":
+                    raise Exception(f"File processing failed: {file_info.error}")
+                elif file_info.state == "PROCESSING":
+                    progress.update(task, description=f"🔄 Processing... ({elapsed:.0f}s)")
+                else:
+                    progress.update(task, description=f"⏳ Status: {file_info.state} ({elapsed:.0f}s)")
                 
-                # Wait before next check
-                time.sleep(5)
+            except Exception as e:
+                logger.error(f"Error checking file status: {e}")
+                raise Exception(f"Failed to check file processing status: {e}")
+            
+            # Wait before next check
+            time.sleep(5)
     
     def analyze_video_content(
         self, 
@@ -262,15 +258,28 @@ class GeminiService:
             model_config = template_manager.get_model_config(template_name)
             
             # Get model name from config
-            model_name = model_config.get('model', 'gemini-2.5-flash')
+            # 🎯 统一配置：使用统一的模型配置获取函数
+            from ..config import get_default_model
+            model_name = model_config.get('model', get_default_model(self.config))
             
             console.print(f"[cyan]📝 Using model: {model_name}[/cyan]")
             logger.info(f"Starting analysis with model: {model_name}, template: {template_name}")
             
-            # Generate content using uploaded video file and prompt
+            # Generate content using uploaded video file and prompt with proper role structure for v0.3.0
             response = self.client.models.generate_content(
                 model=model_name,
-                contents=[prompt, uploaded_file],
+                contents=[
+                    types.Content(
+                        role="user",
+                        parts=[
+                            types.Part.from_text(prompt), 
+                            types.Part.from_uri(
+                                uploaded_file.uri, 
+                                mime_type=uploaded_file.mime_type
+                            )
+                        ]
+                    )
+                ],
                 config=types.GenerateContentConfig(
                     temperature=model_config.get('temperature', 0.7),
                     max_output_tokens=model_config.get('max_tokens', 8192)
@@ -378,10 +387,12 @@ class GeminiService:
     
     def get_client_info(self) -> Dict[str, Any]:
         """Get information about the Gemini client configuration."""
+        # 🎯 统一配置：使用统一的模型配置获取函数
+        from ..config import get_default_model
         return {
             'client_initialized': self._client is not None,
             'api_configured': bool(get_config_value(self.config, 'google_api.api_key')),
             'max_file_size_mb': get_config_value(self.config, 'google_api.max_file_size_mb', 100),
-            'default_model': get_config_value(self.config, 'google_api.model', 'gemini-2.5-flash'),
+            'default_model': get_config_value(self.config, 'google_api.model', get_default_model(self.config)),
             'sdk_version': genai.__version__ if hasattr(genai, '__version__') else 'unknown'
         }

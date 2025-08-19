@@ -1,0 +1,12 @@
+{
+  "total_suites": 4,
+  "passed_suites": 2,
+  "failed_suites": 2,
+  "test_details": [
+    "✅ TestRealVideoValidation: PASSED",
+    "❌ TestGemini25ProIntegration: FAILED",
+    "✅ TestLongRunningBatchProcessing: PASSED",
+    "❌ TestConcurrencyAndStability: FAILED"
+  ],
+  "timestamp": "2025-08-19T00:10:47.867032"
+}

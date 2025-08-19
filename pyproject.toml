@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "gs-videoreport"
-version = "0.1.1"
+version = "0.2.0"
 description = "AI-powered video-to-lesson-plan converter for teachers"
 authors = ["Your Name <your.email@example.com>"]
 readme = "README.md"

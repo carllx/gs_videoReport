@@ -1,0 +1,38 @@
+{
+  "test_name": "real_figma_videos_performance_benchmark",
+  "video_count": 20,
+  "total_duration_seconds": 20.495760679244995,
+  "throughput_files_per_minute": 58.54869300924159,
+  "avg_seconds_per_video": 1.0247880339622497,
+  "success_rate": 1.0,
+  "test_timestamp": "2025-08-18T20:30:56.449741",
+  "video_files": [
+    "016 - class-project-002-wireframe.mp4.mp4",
+    "006 - class-project-001-create-your-own-brief.mp4.mp4",
+    "012 - strokes-plus-updating-color-defaults-in-figma.mp4.mp4",
+    "014 - scale-vs-selection-tool-in-figma.mp4.mp4",
+    "004 - whats-the-difference-between-ui-and-ux-in-figma.mp4.mp4",
+    "003 - what-is-figma-for-does-it-do-the-coding.mp4.mp4",
+    "009 - the-basics-of-type-fonts-in-figma.mp4_2.mp4",
+    "002 - getting-started-with-figma-training.mp4.mp4",
+    "019 - how-to-use-plugins-in-figma-for-icons.mp4.mp4",
+    "001 - introduction-to-figma-essentials-training-course.mp4.mp4",
+    "013 - object-editing-and-how-to-escape-in-figma.mp4.mp4",
+    "011 - how-to-use-color-in-figma.mp4.mp4",
+    "007 - what-is-lo-fi-wireframe-vs-high-fidelity-in-figma.mp4.mp4",
+    "020 - class-project-003-icons.mp4.mp4",
+    "008 - creating-our-design-file-introducing-frames-in-figma.mp4.mp4",
+    "018 - matching-the-stroke-of-our-icons.mp4.mp4",
+    "015 - frames-vs-groups-in-figma.mp4.mp4",
+    "005 - what-we-are-making-in-this-figma-course.mp4.mp4",
+    "017 - where-to-get-free-icons-for-figma.mp4.mp4",
+    "010 - rectangles-circles-buttons-rounded-corners-in-figma.mp4.mp4"
+  ],
+  "benchmark_criteria": {
+    "max_total_duration_seconds": 1800,
+    "min_throughput_files_per_minute": 0.8,
+    "max_avg_seconds_per_video": 60,
+    "min_success_rate": 0.95
+  },
+  "result": "PASS"
+}

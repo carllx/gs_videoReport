@@ -3,16 +3,36 @@
   "title": "gs_videoReport Configuration",
   "description": "Schema for gs_videoReport configuration file",
   "type": "object",
-  "required": ["api_key", "model_name"],
+  "required": ["google_api"],
   "properties": {
-    "api_key": {
-      "type": "string",
-      "description": "Gemini API key"
-    },
-    "model_name": {
-      "type": "string",
-      "default": "gemini-2.5-flash",
-      "description": "Gemini model name"
+    "google_api": {
+      "type": "object",
+      "required": ["api_key"],
+      "properties": {
+        "api_key": {
+          "type": "string",
+          "description": "Gemini API key from https://makersuite.google.com/app/apikey"
+        },
+        "model": {
+          "type": "string",
+          "default": "gemini-2.5-flash",
+          "enum": ["gemini-2.5-pro", "gemini-2.5-flash", "gemini-2.5-flash-lite"],
+          "description": "Gemini model name"
+        },
+        "temperature": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 2,
+          "default": 0.7,
+          "description": "Model temperature for response randomness"
+        },
+        "max_tokens": {
+          "type": "integer",
+          "minimum": 1,
+          "default": 8192,
+          "description": "Maximum tokens in response"
+        }
+      }
     },
     "default_output_path": {
       "type": "string",

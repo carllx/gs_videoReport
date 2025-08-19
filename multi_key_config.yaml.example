@@ -1,0 +1,106 @@
+# gs_videoReport v2.1 多密钥配置示例
+# 这是专门用于多密钥管理的配置文件
+
+# ⚠️ 安全提醒：
+# 1. 复制此文件为 multi_key_config.yaml
+# 2. 填入您的真实API密钥
+# 3. 该文件已加入.gitignore，不会提交到版本控制
+
+# 🔑 多密钥配置
+api_keys:
+  account_1:
+    key: "AIzaSyXXXXXXXXXXXXXXXXXXXXXXXXX"  # 替换为您的第1个API密钥
+    name: "主账户"
+    daily_limit: 100                        # Google免费层每日100请求
+    priority: 1                             # 优先级 (1=最高)
+    description: "主要账户，用于日常处理"
+    
+  account_2:
+    key: "AIzaSyYYYYYYYYYYYYYYYYYYYYYYYY"  # 替换为您的第2个API密钥
+    name: "备用账户1"
+    daily_limit: 100
+    priority: 2
+    description: "备用账户，主账户耗尽时使用"
+    
+  account_3:
+    key: "AIzaSyZZZZZZZZZZZZZZZZZZZZZZZZ"  # 替换为您的第3个API密钥
+    name: "备用账户2"
+    daily_limit: 100  
+    priority: 3
+    description: "第二备用账户，确保连续处理能力"
+
+# 📊 处理配置
+processing:
+  max_concurrent_keys: 2        # 最大同时使用的密钥数 (推荐2个)
+  requests_per_video: 5         # 每个视频预估消耗的请求数
+  safety_buffer: 10             # 每个密钥保留的安全缓冲请求数
+  retry_attempts: 3             # API失败时的重试次数
+  exponential_backoff: true     # 启用指数退避重试策略
+  max_retry_delay: 300          # 最大重试延迟时间(秒)
+
+# 📈 监控配置
+monitoring:
+  check_interval: 300           # 配额检查间隔(秒) - 5分钟
+  quota_warning_threshold: 20   # 配额警告阈值 (剩余请求数)
+  quota_critical_threshold: 5   # 配额严重警告阈值
+  save_status_file: true        # 保存配额状态到文件
+  status_file_path: "quota_status.json"  # 状态文件路径
+  enable_dashboard: true        # 启用Rich仪表盘显示
+  dashboard_refresh_interval: 60  # 仪表盘刷新间隔(秒)
+
+# ⚙️ 高级配置
+advanced:
+  # 负载均衡策略
+  load_balancing_strategy: "least_used"  # 可选: least_used, round_robin, priority
+  
+  # 配额预测
+  enable_quota_prediction: true          # 启用配额使用预测
+  prediction_window_hours: 24           # 预测时间窗口(小时)
+  
+  # 自动恢复
+  auto_recovery: true                   # 启用自动恢复机制
+  recovery_check_interval: 3600        # 恢复检查间隔(秒) - 1小时
+  
+  # 成本优化
+  enable_cost_optimization: true       # 启用成本优化
+  preferred_model: "gemini-2.5-flash"  # 首选经济模型
+  fallback_model: "gemini-2.5-pro"     # fallback到高质量模型
+
+# 🚨 告警配置
+alerts:
+  enable_notifications: true           # 启用告警通知
+  notification_methods:
+    - "console"                        # 控制台输出
+    - "file"                          # 文件日志
+    # - "email"                        # 邮件通知 (需配置SMTP)
+    # - "slack"                        # Slack通知 (需配置Webhook)
+  
+  # 告警条件
+  alert_conditions:
+    quota_warning: true                # 配额警告
+    quota_exhausted: true              # 配额耗尽
+    all_keys_exhausted: true           # 所有密钥耗尽
+    api_error_rate_high: true          # API错误率过高
+    processing_capacity_low: true      # 处理能力不足
+
+# 📋 使用示例命令
+# 
+# 1. 检查配额状态:
+#    python api_quota_monitor.py --config multi_key_config.yaml --check
+#
+# 2. 持续监控模式:
+#    python api_quota_monitor.py --config multi_key_config.yaml --monitor --interval 300
+#
+# 3. 多密钥批量处理:
+#    python -m src.gs_video_report.cli.app batch test_videos \
+#      --multi-key-config multi_key_config.yaml \
+#      --output test_output \
+#      --workers 2
+#
+# 4. 使用多密钥处理单个视频:
+#    python multi_key_processor.py --config multi_key_config.yaml --video test_videos/sample.mp4
+
+# 🔗 相关文档:
+# - 配额管理指南: docs/guides/QUOTA_MANAGEMENT_GUIDE.md
+# - API故障排查: docs/troubleshooting/API_TROUBLESHOOTING_GUIDE.md
+# - 多密钥架构: docs/architecture/10-多密钥管理架构-multi-key-architecture.md

@@ -4,7 +4,8 @@ Tests for CLI functionality.
 import pytest
 from typer.testing import CliRunner
 
-from src.gs_video_report.cli import app, validate_youtube_url
+from src.gs_video_report.cli.app import app
+from src.gs_video_report.cli.validators.url_validator import URLValidator
 
 
 runner = CliRunner()
@@ -25,7 +26,7 @@ class TestYouTubeURLValidation:
         ]
         
         for url in valid_urls:
-            is_valid, video_id = validate_youtube_url(url)
+            is_valid, video_id = URLValidator.validate_youtube_url(url)
             assert is_valid, f"URL should be valid: {url}"
             assert video_id == "dQw4w9WgXcQ", f"Video ID should be extracted from: {url}"
     
@@ -42,7 +43,7 @@ class TestYouTubeURLValidation:
         ]
         
         for url in invalid_urls:
-            is_valid, video_id = validate_youtube_url(url)
+            is_valid, video_id = URLValidator.validate_youtube_url(url)
             assert not is_valid, f"URL should be invalid: {url}"
             assert video_id is None, f"Video ID should be None for invalid URL: {url}"
 
@@ -55,7 +56,7 @@ class TestCLICommands:
         result = runner.invoke(app, ["version"])
         assert result.exit_code == 0
         assert "gs_videoReport" in result.stdout
-        assert "0.1.0-dev" in result.stdout
+        assert "0.2.0" in result.stdout
     
     def test_list_templates_command(self):
         """Test list-templates command."""

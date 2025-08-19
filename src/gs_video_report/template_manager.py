@@ -74,6 +74,12 @@ class TemplateManager:
             for template in self.templates.values()
         ]
     
+    def _get_api_model(self) -> str:
+        """获取API模型配置"""
+        # 🎯 统一配置：使用统一的模型配置获取函数
+        from .config import get_default_model
+        return get_default_model(self.config)
+    
     def has_template(self, name: str) -> bool:
         """
         Check if template exists.
@@ -166,7 +172,8 @@ class TemplateManager:
         defaults = {
             'temperature': self.config.get('google_api', {}).get('temperature', 0.7),
             'max_tokens': self.config.get('google_api', {}).get('max_tokens', 8192),
-            'model': self.config.get('google_api', {}).get('model', 'gemini-2.5-flash')
+            # 🎯 统一配置：使用统一的模型配置获取函数
+            'model': self._get_api_model()
         }
         
         return {**defaults, **model_config}
